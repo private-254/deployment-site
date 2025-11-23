@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy DaveX WhatsApp Bots</title>
+    
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DaveX Deploy">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(99, 102, 241, 0.1), 
+                transparent,
+                rgba(139, 92, 246, 0.1),
+                transparent,
+                rgba(6, 182, 212, 0.1),
+                transparent
+            );
+            animation: aurora-float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes aurora-float {
+            0%, 100% { transform: translateX(-50%) translateY(-50%) rotate(0deg) scale(1); }
+            33% { transform: translateX(-40%) translateY(-60%) rotate(120deg) scale(1.1); }
+            66% { transform: translateX(-60%) translateY(-40%) rotate(240deg) scale(0.9); }
+        }
+
+        .deploy-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--glass-shadow);
+            padding: var(--space-xl);
+            width: 100%;
+            max-width: 520px;
+            margin: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .deploy-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        }
+
+        .deploy-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .deploy-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-lg);
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+            animation: float-gentle 3s ease-in-out infinite;
+        }
+
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .deploy-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .deploy-subtitle {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: var(--space-sm);
+        }
+
+        .deploy-note {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .deploy-note strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .bot-selection {
+            margin-bottom: var(--space-lg);
+        }
+
+        .bot-selection-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text-primary);
+        }
+
+        .bot-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-sm);
+        }
+
+        .bot-option {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .bot-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .bot-option.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .bot-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .bot-info {
+            flex: 1;
+        }
+
+        .bot-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .bot-description {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .input-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+            color: var(--text-primary);
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: var(--space-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .input-field.with-icon {
+            padding-left: 3rem;
+        }
+
+        .deploy-button {
+            width: 100%;
+            padding: var(--space-md) var(--space-lg);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: var(--space-lg);
+        }
+
+        .deploy-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(99, 102, 241, 0.4);
+        }
+
+        .deploy-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .deploy-button .button-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .loading-spinner {
+            display: none;
+            margin: var(--space-lg) auto;
+            text-align: center;
+        }
+
+        .loading-spinner.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto var(--space-sm);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-lg);
+            font-weight: 500;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--error);
+        }
+
+        .message.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--warning);
+        }
+
+        .fork-actions {
+            display: none;
+            gap: var(--space-sm);
+            flex-direction: column;
+        }
+
+        .fork-actions.show {
+            display: flex;
+        }
+
+        .fork-button {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+        }
+
+        .fork-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .deployment-options {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .deployment-options.show {
+            display: grid;
+        }
+
+        .deploy-option {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .deploy-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .deploy-option i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .deploy-option span {
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .deploy-container {
+                margin: var(--space-sm);
+                padding: var(--space-lg);
+            }
+            
+            .deploy-title {
+                font-size: 1.75rem;
+            }
+
+            .deployment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="deploy-container">
+        <div class="deploy-header">
+            <div class="deploy-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h1 class="deploy-title">Deploy DaveX Bots</h1>
+            <p class="deploy-subtitle">Deploy your WhatsApp bot to your preferred platform</p>
+        </div>
+
+        <div class="deploy-note">
+            <strong>Important:</strong> Make sure you have forked the repository before deploying. Choose your preferred bot and deployment platform below.
+        </div>
+
+        <form id="deploy-form">
+            <div class="bot-selection">
+                <label class="bot-selection-label">
+                    <i class="fas fa-robot"></i> Select Bot
+                </label>
+                <div class="bot-options">
+                    <div class="bot-option selected" data-bot="venom-xmd">
+                        <div class="bot-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="bot-info">
+                            <div class="bot-name">VENOM-XMD</div>
+                            <div class="bot-description">Advanced single-session WhatsApp bot</div>
+                        </div>
+                    </div>
+                    <div class="bot-option" data-bot="dave-md">
+                        <div class="bot-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="bot-info">
+                            <div class="bot-name">DAVE-MD</div>
+                            <div class="bot-description">Multi-session bot platform</div>
+                        </div>
+                    </div>
+                    <div class="bot-option" data-bot="dave-ai">
+                        <div class="bot-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="bot-info">
+                            <div class="bot-name">Dave-Ai</div>
+                            <div class="bot-description">AI-powered WhatsApp assistant</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="username" class="input-label">
+                    <i class="fab fa-github"></i> GitHub Username
+                </label>
+                <div class="input-container">
+                    <i class="fab fa-github input-icon"></i>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="input-field with-icon" 
+                        placeholder="Enter your GitHub username" 
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+            </div>
+
+            <button type="submit" class="deploy-button" id="deploy-btn">
+                <span class="button-text">
+                    <i class="fas fa-rocket"></i>
+                    Check & Deploy
+                </span>
+            </button>
+        </form>
+
+        <div class="loading-spinner" id="loading">
+            <div class="spinner"></div>
+            <p>Checking repository...</p>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="deployment-options" id="deployment-options">
+            <a href="deploy.html#" class="deploy-option" id="deploy-heroku">
+                <i class="fas fa-cloud"></i>
+                <span>Deploy on Heroku</span>
+            </a>
+            <a href="deploy.html#" class="deploy-option" id="deploy-railway">
+                <i class="fas fa-train"></i>
+                <span>Deploy on Railway</span>
+            </a>
+            <a href="deploy.html#" class="deploy-option" id="deploy-replit">
+                <i class="fas fa-code"></i>
+                <span>Run on Replit</span>
+            </a>
+            <a href="deploy.html#" class="deploy-option" id="deploy-platform">
+                <i class="fas fa-server"></i>
+                <span>DaveX Platform</span>
+            </a>
+        </div>
+
+        <div class="fork-actions" id="fork-actions">
+            <a href="deploy.html#" class="fork-button" id="fork-venom">
+                <i class="fas fa-code-branch"></i>
+                Fork VENOM-XMD
+            </a>
+            <a href="deploy.html#" class="fork-button" id="fork-davemd">
+                <i class="fas fa-code-branch"></i>
+                Fork DAVE-MD
+            </a>
+            <a href="deploy.html#" class="fork-button" id="fork-daveai">
+                <i class="fas fa-code-branch"></i>
+                Fork Dave-Ai
+            </a>
+        </div>
+
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+
+    <script>
+        class DeployManager {
+            constructor() {
+                this.selectedBot = 'venom-xmd';
+                this.form = document.getElementById('deploy-form');
+                this.usernameInput = document.getElementById('username');
+                this.deployButton = document.getElementById('deploy-btn');
+                this.loading = document.getElementById('loading');
+                this.message = document.getElementById('message');
+                this.forkActions = document.getElementById('fork-actions');
+                this.deploymentOptions = document.getElementById('deployment-options');
+                
+                this.botOptions = document.querySelectorAll('.bot-option');
+                this.forkButtons = {
+                    'venom': document.getElementById('fork-venom'),
+                    'davemd': document.getElementById('fork-davemd'),
+                    'daveai': document.getElementById('fork-daveai')
+                };
+                
+                this.deployButtons = {
+                    'heroku': document.getElementById('deploy-heroku'),
+                    'railway': document.getElementById('deploy-railway'),
+                    'replit': document.getElementById('deploy-replit'),
+                    'platform': document.getElementById('deploy-platform')
+                };
+                
+                this.init();
+            }
+
+            init() {
+                this.setupBotSelection();
+                this.form.addEventListener('submit', (e) => this.handleDeploy(e));
+                this.setupForkButtons();
+                this.setupDeployButtons();
+            }
+
+            setupBotSelection() {
+                this.botOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.botOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        this.selectedBot = option.dataset.bot;
+                    });
+                });
+            }
+
+            setupForkButtons() {
+                this.forkButtons.venom.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        window.open(`https://github.com/gifteddevsmd/VENOM-XMD/fork`, '_blank');
+                    }
+                });
+
+                this.forkButtons.davemd.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        window.open(`https://github.com/gifteddevsmd/DAVE-MD2/fork`, '_blank');
+                    }
+                });
+
+                this.forkButtons.daveai.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        window.open(`https://github.com/gifteddevsmd/Dave-Ai/fork`, '_blank');
+                    }
+                });
+            }
+
+            setupDeployButtons() {
+                // Heroku deployment
+                this.deployButtons.heroku.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        const repo = this.getRepoName();
+                        const deployUrl = `https://dashboard.heroku.com/new?template=https://github.com/${username}/${repo}`;
+                        window.open(deployUrl, '_blank');
+                    }
+                });
+
+                // Railway deployment
+                this.deployButtons.railway.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        const repo = this.getRepoName();
+                        const deployUrl = `https://railway.app/template/${repo}?referralCode=your-code`;
+                        window.open(deployUrl, '_blank');
+                    }
+                });
+
+                // Replit deployment
+                this.deployButtons.replit.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const username = this.usernameInput.value.trim();
+                    if (username) {
+                        const repo = this.getRepoName();
+                        const deployUrl = `https://repl.it/github/${username}/${repo}`;
+                        window.open(deployUrl, '_blank');
+                    }
+                });
+
+                // DaveX Platform
+                this.deployButtons.platform.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.open('https://platform.cypherx.space/login', '_blank');
+                });
+            }
+
+            getRepoName() {
+                const botRepos = {
+                    'venom-xmd': 'VENOM-XMD',
+                    'dave-md': 'DAVE-MD2',
+                    'dave-ai': 'Dave-Ai'
+                };
+                return botRepos[this.selectedBot];
+            }
+
+            async handleDeploy(event) {
+                event.preventDefault();
+                
+                const username = this.usernameInput.value.trim();
+                if (!username) {
+                    this.showMessage('Please enter your GitHub username.', 'error');
+                    return;
+                }
+
+                this.setLoading(true);
+                this.hideMessage();
+                this.hideForkActions();
+                this.hideDeploymentOptions();
+
+                try {
+                    const repo = this.getRepoName();
+                    const response = await fetch(`https://api.github.com/repos/${username}/${repo}`);
+                    
+                    this.setLoading(false);
+
+                    if (response.ok) {
+                        this.showMessage('Repository found! Choose your deployment platform:', 'success');
+                        this.showDeploymentOptions();
+                    } else if (response.status === 404) {
+                        this.showMessage('Repository not found. Please fork the repository first.', 'warning');
+                        this.showForkActions();
+                    } else {
+                        this.showMessage('Error checking repository. Please try again.', 'error');
+                    }
+                } catch (error) {
+                    this.setLoading(false);
+                    this.showMessage('Network error. Please check your connection and try again.', 'error');
+                    console.error('Deploy error:', error);
+                }
+            }
+
+            setLoading(isLoading) {
+                if (isLoading) {
+                    this.deployButton.disabled = true;
+                    this.deployButton.innerHTML = '<span class="button-text"><i class="fas fa-spinner fa-spin"></i> Checking...</span>';
+                    this.loading.classList.add('show');
+                } else {
+                    this.deployButton.disabled = false;
+                    this.deployButton.innerHTML = '<span class="button-text"><i class="fas fa-rocket"></i> Check & Deploy</span>';
+                    this.loading.classList.remove('show');
+                }
+            }
+
+            showMessage(text, type) {
+                this.message.textContent = text;
+                this.message.className = `message ${type} show`;
+            }
+
+            hideMessage() {
+                this.message.classList.remove('show');
+            }
+
+            showForkActions() {
+                this.forkActions.classList.add('show');
+            }
+
+            hideForkActions() {
+                this.forkActions.classList.remove('show');
+            }
+
+            showDeploymentOptions() {
+                this.deploymentOptions.classList.add('show');
+            }
+
+            hideDeploymentOptions() {
+                this.deploymentOptions.classList.remove('show');
+            }
+        }
+
+        // Initialize the deploy manager when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new DeployManager();
+        });
+    </script>
+</body>
+</html>
