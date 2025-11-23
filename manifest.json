@@ -1,0 +1,130 @@
+{
+  "name": "DaveX WhatsApp Bots",
+  "short_name": "DaveX Bots",
+  "description": "The Ultimate WhatsApp Bot Platform - Deploy VENOM-XMD, DAVE-MD, and Dave-Ai with one click",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "utilities", "developer", "communication"],
+  "icons": [
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "384x384",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "256x256",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "128x128",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "96x96",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "64x64",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "32x32",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://i.ibb.co/Q4QCHYd/copilot-image-1739572393172.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "DaveX Bot Interface"
+    },
+    {
+      "src": "https://files.catbox.moe/fl4buk.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "DaveX Platform"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Quick Deploy",
+      "short_name": "Deploy",
+      "description": "Deploy your bot instantly",
+      "url": "/deploy.html",
+      "icons": [
+        {
+          "src": "https://files.catbox.moe/fl4buk.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "Installation Guide",
+      "short_name": "Install",
+      "description": "Step-by-step installation guide",
+      "url": "/index.html#install",
+      "icons": [
+        {
+          "src": "https://files.catbox.moe/fl4buk.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    },
+    {
+      "name": "VENOM-XMD",
+      "short_name": "VENOM",
+      "description": "Advanced single-session bot",
+      "url": "/index.html#features",
+      "icons": [
+        {
+          "src": "https://files.catbox.moe/fl4buk.jpg",
+          "sizes": "96x96",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "features": [
+    "Cross Platform",
+    "Fast Deployment",
+    "WhatsApp Integration",
+    "Multi-Session Support",
+    "AI Powered"
+  ],
+  "iarc_rating_id": "e58b9232-9c41-4e22-8e40-8a8d2e9a3c7a"
+}
